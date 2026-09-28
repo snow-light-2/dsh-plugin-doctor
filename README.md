@@ -59,12 +59,17 @@ node bin/dsh-plugin-doctor.js explain "%APPDATA%\dsh-desktop\logs\harness.log"
 node bin/dsh-plugin-doctor.js graph
 ```
 
-Or install it globally:
+Or wire it into a checkout so the `dsh-plugin-doctor` name is on your PATH:
 
 ```bash
-npm install -g dsh-plugin-doctor
+git clone https://github.com/snow-light-2/dsh-plugin-doctor.git
+cd dsh-plugin-doctor
+npm link
 dsh-plugin-doctor check
 ```
+
+There is nothing to install: the package has no dependencies, and `git clone` plus
+`node bin/dsh-plugin-doctor.js` is a complete installation.
 
 ## Commands
 

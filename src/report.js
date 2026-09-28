@@ -1,5 +1,3 @@
-import { join } from 'node:path';
-
 const useColor = () => process.stdout.isTTY && !process.env.NO_COLOR && process.env.TERM !== 'dumb';
 
 const paint = (code, text) => (useColor() ? `\u001b[${code}m${text}\u001b[0m` : text);
@@ -123,5 +121,3 @@ export function toJson(ctx, findings, counts) {
     })),
   };
 }
-
-export { join };

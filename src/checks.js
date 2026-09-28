@@ -3,10 +3,10 @@ import { join, resolve } from 'node:path';
 
 import { enablement, isOn, isOff } from './parse.js';
 import { satisfies, compareVersions } from './semver.js';
-import { resolvesFrom, linkKind } from './context.js';
+import { resolvesFrom } from './context.js';
 import { readJson } from './paths.js';
 
-export const SEVERITY_ORDER = { error: 0, warn: 1, info: 2 };
+const SEVERITY_ORDER = { error: 0, warn: 1, info: 2 };
 
 const finding = (code, severity, title, message, extra = {}) => ({
   code,
@@ -24,7 +24,7 @@ const finding = (code, severity, title, message, extra = {}) => ({
  * than merely redundant. Each entry documents the observable failure, because
  * the whole point of this tool is to turn a crash into a sentence.
  */
-export const SINGLETON_FAMILIES = [
+const SINGLETON_FAMILIES = [
   {
     id: 'session-title',
     // The service package `@deepseek-ai/dsh-session-title` owns the registry and
@@ -564,23 +564,6 @@ export {
   checkStaleInstalls,
 };
 
-export const CHECK_TITLES = {
-  D001: 'patch entry skipped (name mismatch)',
-  D002: 'patch entry targets a missing id',
-  D003: 'same package loaded twice',
-  D004: 'singleton service conflict',
-  D005: 'market / tree disagreement',
-  D006: 'plugin directory is not a link',
-  D007: 'engine range mismatch',
-  D008: 'unresolvable dependency',
-  D009: 'layer override',
-  D010: 'unfinished plugin removal',
-  D011: 'shadowed plugin install',
-  D012: 'profile directory hygiene',
-  D013: 'client inject hint',
-  D014: 'duplicate DSH installation',
-};
-
 export function runChecks(ctx) {
   const findings = [];
   for (const check of CHECKS) {
@@ -614,5 +597,3 @@ export function summarize(findings) {
   for (const item of findings) counts[item.severity] = (counts[item.severity] ?? 0) + 1;
   return counts;
 }
-
-export { linkKind, isOn, isOff };

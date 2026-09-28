@@ -53,7 +53,7 @@ function appDataRoot() {
  * `%APPDATA%\dsh-desktop\harness` is what DSH Desktop injects as DSH_HOME;
  * `~/.dsh` is the standalone CLI default.
  */
-export function candidateHomes() {
+function candidateHomes() {
   const list = [];
   if (process.env.DSH_HOME) list.push(resolve(process.env.DSH_HOME));
   list.push(join(appDataRoot(), DESKTOP_DIR, 'harness'));
@@ -102,12 +102,12 @@ function binCandidates() {
  * the only reliable way to find a custom install directory: Electron records
  * nothing about its own location on disk.
  */
-export function logsDir(home) {
+function logsDir(home) {
   return join(home, '..', 'logs');
 }
 
 /** Log files under the DSH user-data directory, newest first. */
-export function logFiles(home) {
+function logFiles(home) {
   const files = [];
   for (const dir of [logsDir(home), join(home, 'logs')]) {
     let names;
@@ -160,7 +160,7 @@ export function loggedInstalls(home) {
   return [...byPath.values()];
 }
 
-export function detectFromLogs(home) {
+function detectFromLogs(home) {
   const installs = loggedInstalls(home);
   const ranked = [...installs].sort((a, b) => b.lastIndex - a.lastIndex);
   for (const item of ranked) {
@@ -179,7 +179,7 @@ export function detectFromLogs(home) {
 }
 
 /** Optional per-machine pin: `.dsh-doctor.json` in the DSH home or the cwd. */
-export function readDoctorConfig(home) {
+function readDoctorConfig(home) {
   const candidates = [];
   if (home) candidates.push(join(home, '.dsh-doctor.json'));
   candidates.push(join(process.cwd(), '.dsh-doctor.json'));
@@ -233,12 +233,4 @@ export function appDirFromBin(bin) {
   if (!bin) return null;
   // <app>/node_modules/@deepseek-ai/dsh/lib/bin.js
   return resolve(bin, '..', '..', '..', '..', '..');
-}
-
-export function isDirectory(path) {
-  try {
-    return statSync(path).isDirectory();
-  } catch {
-    return false;
-  }
 }

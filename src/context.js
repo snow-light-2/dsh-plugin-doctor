@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, lstatSync, readlinkSync, realpathSync } from 'node:fs';
-import { join, resolve, isAbsolute } from 'node:path';
+import { join, resolve } from 'node:path';
 
 import { parseDump, parsePatch, parseDumpWarnings, enablement, isOn } from './parse.js';
 import {
@@ -15,12 +15,12 @@ import {
 const SHARED_TREE_KEEP = new Set(['dshmarket', '@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app']);
 
 /**
- * How a directory is materialised.
+ * How a directory is materialised, exposed on every entry of `installed[]`:
  *   'link' -- a symlink or an NTFS junction; required for generation switching
  *   'dir'  -- a real directory (pnpm may do this for local `file:` installs)
  *   'missing' -- the link exists but its target does not
  */
-export function linkKind(path) {
+function linkKind(path) {
   let stat;
   try {
     stat = lstatSync(path);
@@ -73,7 +73,7 @@ function packageDirs(nodeModulesDir) {
 }
 
 /** Read every package installed in a node_modules directory, with its link kind. */
-export function listInstalled(nodeModulesDir) {
+function listInstalled(nodeModulesDir) {
   const list = [];
   for (const { name, dir } of packageDirs(nodeModulesDir)) {
     const link = linkKind(dir);
@@ -91,29 +91,6 @@ export function listInstalled(nodeModulesDir) {
   return list;
 }
 
-/** `main`, or the `.` export, or the two conventional fallbacks. */
-export function entryFile(pkgDir, manifest) {
-  const candidates = [];
-  const exp = manifest?.exports;
-  if (typeof exp === 'string') candidates.push(exp);
-  else if (exp && typeof exp === 'object') {
-    const dot = exp['.'];
-    if (typeof dot === 'string') candidates.push(dot);
-    else if (dot && typeof dot === 'object') {
-      for (const key of ['default', 'import', 'require']) {
-        if (typeof dot[key] === 'string') { candidates.push(dot[key]); break; }
-      }
-    }
-  }
-  if (typeof manifest?.main === 'string' && manifest.main !== '') candidates.push(manifest.main);
-  candidates.push('lib/index.js', 'index.js', 'dist/index.js');
-  for (const candidate of candidates) {
-    const file = resolve(pkgDir, candidate);
-    if (existsSync(file)) return file;
-  }
-  return null;
-}
-
 function packageRootOf(spec) {
   const parts = spec.split('/');
   return spec.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
@@ -128,12 +105,6 @@ export function resolvesFrom(spec, roots) {
     if (existsSync(join(base, root))) return true;
   }
   return false;
-}
-
-export function relativeTo(from, to) {
-  if (!from || !to) return to ?? from ?? '';
-  const rel = join(from, '..');
-  return to.startsWith(rel) ? to.slice(rel.length).replace(/^[\\/]/, '') : to;
 }
 
 /**
@@ -259,5 +230,3 @@ export function loadContext(options = {}) {
     sharedTreeKeep: SHARED_TREE_KEEP,
   };
 }
-
-export { isOn, enablement, isAbsolute };
