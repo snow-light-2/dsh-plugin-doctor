@@ -38,7 +38,7 @@ import { fileURLToPath } from 'node:url';
 
 import { loadContext } from '../src/context.js';
 import { runChecks, summarize } from '../src/checks.js';
-import { resolveDshBin, resolveHome, resolveProfileDir } from '../src/paths.js';
+import { readJson, resolveDshBin, resolveHome, resolveProfileDir } from '../src/paths.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PACKAGE_NAME = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).name;
@@ -209,7 +209,11 @@ async function install() {
 
   const manifestFile = join(profileDir, 'package.json');
   const patchFile = join(profileDir, 'cordis.patch.yml');
-  const manifestInfo = JSON.parse(readFileSync(manifestFile, 'utf8'));
+  // Through readJson, not JSON.parse: a profile manifest written by PowerShell
+  // carries a UTF-8 BOM, and a bare JSON.parse throws on it.
+  const manifestRead = readJson(manifestFile);
+  if (!manifestRead.ok) fail(`cannot read ${manifestFile}: ${manifestRead.error}`);
+  const manifestInfo = manifestRead.value;
   const bundles = manifestInfo?.dsh?.profile?.bundles;
   if (!Array.isArray(bundles)) fail(`${manifestFile} has no dsh.profile.bundles array`);
 
@@ -423,7 +427,9 @@ function uninstall() {
   const linkPath = join(profileDir, 'node_modules', PACKAGE_NAME);
   const removed = [];
 
-  const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
+  const manifestRead = readJson(manifestFile);
+  if (!manifestRead.ok) fail(`cannot read ${manifestFile}: ${manifestRead.error}`);
+  const manifest = manifestRead.value;
   const bundles = manifest?.dsh?.profile?.bundles;
   if (Array.isArray(bundles) && bundles.includes(PACKAGE_NAME)) {
     manifest.dsh.profile.bundles = bundles.filter((name) => name !== PACKAGE_NAME);
@@ -431,8 +437,18 @@ function uninstall() {
     removed.push(`bundles entry`);
   }
   if (existsSync(linkPath)) {
-    rmSync(linkPath, { recursive: true, force: true });
-    removed.push('node_modules link');
+    // Only ever remove a LINK. A real directory at this path means someone
+    // materialised the package — the D006 condition this tool reports. Deleting
+    // it recursively would destroy data this script did not create and cannot
+    // restore, so it refuses and says so instead.
+    if (lstatSync(linkPath).isSymbolicLink()) {
+      rmSync(linkPath, { recursive: true, force: true });
+      removed.push('node_modules link');
+    } else {
+      say(`  refusing to remove ${linkPath}:`);
+      say('    it is a real directory, not a link. It may hold work of yours;');
+      say('    delete it yourself if that is really what you want.');
+    }
   }
 
   if (removed.length === 0) {

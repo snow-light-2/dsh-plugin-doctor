@@ -151,6 +151,17 @@ function fakeResponse() {
   };
 }
 
+/** A request as Node's http server would hand it to the handler. */
+function fakeRequest(url, headers = { host: '127.0.0.1:43129' }) {
+  return { url, method: 'GET', headers };
+}
+
+function armedHandler() {
+  const { ctx, registrations } = loadHost();
+  host.apply(ctx);
+  return registrations[0].handler;
+}
+
 test('the host half exposes one route and answers only its own paths', () => {
   assert.equal(host.name, 'dsh-plugin-doctor');
   assert.deepEqual(host.inject, ['webServer']);
@@ -166,17 +177,15 @@ test('the host half exposes one route and answers only its own paths', () => {
 });
 
 test('the host route answers unknown paths with 404, not a report', () => {
-  const { ctx, registrations } = loadHost();
-  host.apply(ctx);
-  const handler = registrations[0].handler;
+  const handler = armedHandler();
 
   const missing = fakeResponse();
-  handler({ url: '/dsh-plugin-doctor/nope' }, missing);
+  handler(fakeRequest('/dsh-plugin-doctor/nope'), missing);
   assert.equal(missing.status, 404);
   assert.equal(JSON.parse(missing.body).ok, false);
 
   const health = fakeResponse();
-  handler({ url: '/dsh-plugin-doctor/health' }, health);
+  handler(fakeRequest('/dsh-plugin-doctor/health'), health);
   assert.equal(health.status, 200);
   const body = JSON.parse(health.body);
   assert.equal(body.ok, true);
@@ -185,8 +194,69 @@ test('the host route answers unknown paths with 404, not a report', () => {
 
   // A malformed URL is rejected rather than crashing the handler.
   const bad = fakeResponse();
-  handler({ url: 'http://[not a url' }, bad);
+  handler(fakeRequest('http://[not a url'), bad);
   assert.equal(bad.status, 400);
+});
+
+/*
+ * `ctx.webServer.register` mounts a route outside the harness's own auth: DSH's
+ * `/api/*` answers 401 without a token while a plugin prefix answered 200 to
+ * anything reaching the loopback interface. These tests pin the local checks
+ * that stand in for it.
+ */
+
+test('a request whose Host is not loopback is refused (DNS rebinding)', () => {
+  const handler = armedHandler();
+
+  for (const host of ['evil.example.com', 'attacker.test:43129', '192.168.1.9:43129']) {
+    const res = fakeResponse();
+    handler(fakeRequest('/dsh-plugin-doctor/report', { host }), res);
+    assert.equal(res.status, 403, `${host} must be refused`);
+    assert.doesNotMatch(res.body, /hostVersion|findings|C:\\\\/, 'no report may leak');
+  }
+});
+
+test('a cross-site request is refused before it can spawn anything (CSRF)', () => {
+  const handler = armedHandler();
+
+  const crossOrigin = fakeResponse();
+  handler(fakeRequest('/dsh-plugin-doctor/report', { host: '127.0.0.1:43129', origin: 'https://evil.example.com' }), crossOrigin);
+  assert.equal(crossOrigin.status, 403);
+
+  const crossSite = fakeResponse();
+  handler(fakeRequest('/dsh-plugin-doctor/report', { host: '127.0.0.1:43129', 'sec-fetch-site': 'cross-site' }), crossSite);
+  assert.equal(crossSite.status, 403);
+
+  // The refusal has to come before the work: /report spawns a child process.
+  assert.doesNotMatch(crossSite.body, /"cached"/, 'the handler must not have run');
+});
+
+test('same-origin and local callers are still served', () => {
+  const handler = armedHandler();
+
+  // what the browser's own same-origin fetch looks like
+  const sameOrigin = fakeResponse();
+  handler(
+    fakeRequest('/dsh-plugin-doctor/health', {
+      host: '127.0.0.1:43129',
+      origin: 'http://127.0.0.1:43129',
+      'sec-fetch-site': 'same-origin',
+    }),
+    sameOrigin,
+  );
+  assert.equal(sameOrigin.status, 200);
+
+  // curl or a local script: no Origin, no Sec-Fetch-Site
+  for (const host of ['127.0.0.1:43129', 'localhost:43129', '[::1]:43129']) {
+    const res = fakeResponse();
+    handler(fakeRequest('/dsh-plugin-doctor/health', { host }), res);
+    assert.equal(res.status, 200, `${host} must be served`);
+  }
+
+  // a page that typed the URL itself sends Sec-Fetch-Site: none
+  const typed = fakeResponse();
+  handler(fakeRequest('/dsh-plugin-doctor/health', { host: '127.0.0.1:43129', 'sec-fetch-site': 'none' }), typed);
+  assert.equal(typed.status, 200);
 });
 
 /* --------------------------------------------------------- bundle patch */

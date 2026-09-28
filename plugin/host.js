@@ -147,14 +147,73 @@ function send(res, status, body) {
   res.end(text);
 }
 
+/**
+ * Who may call these routes.
+ *
+ * `ctx.webServer.register` mounts a route BEFORE the harness's own auth: DSH's
+ * `/api/*` answers 401 without a token, while a plugin prefix answered 200 to
+ * anything that could reach the loopback interface. Binding to 127.0.0.1 keeps
+ * other machines out. It does not keep out a page running in your own browser:
+ *
+ *   - DNS rebinding points evil.example.com at 127.0.0.1, which makes script on
+ *     that page same-origin, so it can READ the response -- CORS never enters
+ *     into it. Checking the Host header by name is what stops this.
+ *   - An ordinary cross-site fetch cannot read the body (no CORS header is
+ *     sent), but the handler still RUNS, and `/report` spawns processes. Origin
+ *     and Sec-Fetch-Site stop that.
+ *
+ * A local script or curl sends neither header and still works: for processes
+ * already on this machine, the loopback bind is the real boundary.
+ */
+const LOOPBACK_HOST = /^(127(?:\.\d{1,3}){3}|localhost|\[::1\]|::1)$/i;
+const LOOPBACK_ORIGIN = /^https?:\/\/(127(?:\.\d{1,3}){3}|localhost|\[::1\])(:\d+)?$/i;
+
+function hostName(raw) {
+  const value = String(raw ?? '').trim();
+  if (value.startsWith('[')) {
+    const end = value.indexOf(']'); // [::1]:43129
+    return end === -1 ? value : value.slice(0, end + 1);
+  }
+  const colon = value.indexOf(':');
+  return colon === -1 ? value : value.slice(0, colon);
+}
+
+function isLocalRequest(req) {
+  const headers = req?.headers ?? {};
+
+  if (!LOOPBACK_HOST.test(hostName(headers.host))) return false;
+
+  const origin = headers.origin;
+  if (typeof origin === 'string' && origin !== '' && !LOOPBACK_ORIGIN.test(origin)) return false;
+
+  const site = headers['sec-fetch-site'];
+  if (typeof site === 'string' && site !== '' && site !== 'same-origin' && site !== 'none') return false;
+
+  return true;
+}
+
+/** Concurrency guard: N callers must not spawn N check processes. */
+let inFlight = null;
+
 function serveReport(res, { refresh }) {
   const now = Date.now();
   if (!refresh && cache.body && now - cache.at < CACHE_MS) {
     send(res, 200, { ...cache.body, cached: true, ageMs: now - cache.at });
     return;
   }
-  buildReport().then((body) => {
-    if (body.ok) cache = { at: Date.now(), body };
+
+  if (!inFlight) {
+    inFlight = buildReport()
+      .then((body) => {
+        if (body.ok) cache = { at: Date.now(), body };
+        return body;
+      })
+      .finally(() => {
+        inFlight = null;
+      });
+  }
+
+  inFlight.then((body) => {
     send(res, body.ok ? 200 : 502, { ...body, cached: false, ageMs: 0 });
   });
 }
@@ -166,6 +225,14 @@ export function apply(ctx) {
         kind: 'prefix',
         path: BASE_ROUTE,
         handler: (req, res) => {
+          if (!isLocalRequest(req)) {
+            send(res, 403, {
+              ok: false,
+              reason: 'this route answers only same-origin requests arriving over the loopback interface',
+            });
+            return;
+          }
+
           let url;
           try {
             url = new URL(req.url ?? '/', 'http://localhost');
