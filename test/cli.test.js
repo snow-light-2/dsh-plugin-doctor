@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dirname, resolve } from 'node:path';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { main } from '../src/cli.js';
@@ -126,6 +128,28 @@ test('a missing dump is a usage error with guidance, not a crash', async () => {
   const result = await run(['check', '--dump', fixture('definitely-not-here.txt')]);
   assert.equal(result.code, 2);
   assert.match(result.err, /cannot read dump file/);
+});
+
+test('an offline run announces that the profile layer was missing', async () => {
+  const result = await run(offlineCheck());
+  assert.match(result.out, /D015/);
+  assert.match(result.out, /dump-only analysis/);
+});
+
+test('an empty dump is rejected instead of reported clean', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'dsh-plugin-doctor-'));
+  const empty = join(dir, 'empty.txt');
+  writeFileSync(empty, '', 'utf8');
+  const result = await run(['check', '--dump', empty, '--home', EMPTY_HOME]);
+  assert.equal(result.code, 2);
+  assert.match(result.err, /contains no loader entries/);
+  assert.doesNotMatch(result.out, /no problems found/);
+});
+
+test('a --home that is a file is rejected', async () => {
+  const result = await run(['check', '--home', fixture('dump-web-real.txt'), '--dump', fixture('dump-web-real.txt')]);
+  assert.equal(result.code, 2);
+  assert.match(result.err, /--home is not a directory/);
 });
 
 test('explain reads a UTF-16LE log, as PowerShell writes it', async () => {

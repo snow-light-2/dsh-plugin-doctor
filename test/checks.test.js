@@ -15,6 +15,7 @@ import {
   checkDependencyClosure,
   checkStaleInstalls,
   checkDuplicatePackage,
+  checkAnalysisCoverage,
 } from '../src/checks.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -57,6 +58,7 @@ function makeCtx(overrides = {}) {
     sharedTreeKeep: new Set(['dshmarket']),
     loggedInstalls: [],
     bin: null,
+    availability: { profileDir: true, patchLayer: true, manifest: true, market: true, nodeModules: true, dumpEntries: entries.length },
     ...overrides.ctx,
   };
 }
@@ -328,6 +330,30 @@ test('D008 is silent for a plugin that declares nothing', () => {
     installed: [{ name: 'x', dir: 'NM/x', link: { kind: 'link' }, version: '1.0.0', dsh: {}, manifest: { name: 'x', version: '1.0.0' } }],
   });
   assert.deepEqual(checkDependencyClosure(ctx), []);
+});
+
+/* ---------------------------------------------------------------- D015 */
+test('D015 warns when the profile layer was unavailable', () => {
+  const ctx = makeCtx({ ctx: { availability: { profileDir: false, patchLayer: false } } });
+  const findings = checkAnalysisCoverage(ctx);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].severity, 'warn');
+  assert.match(findings[0].message, /only the dump was analysed/);
+  assert.match(findings[0].message, /would not mean this profile is healthy/);
+});
+
+test('D015 says nothing when the profile layer was read', () => {
+  assert.deepEqual(checkAnalysisCoverage(makeCtx()), []);
+});
+
+test('D015 mentions a missing patch layer as info, not a fault', () => {
+  const ctx = makeCtx({
+    ctx: { availability: { profileDir: true, patchLayer: false }, patch: { path: null, entries: [] } },
+  });
+  const findings = checkAnalysisCoverage(ctx);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].severity, 'info');
+  assert.match(findings[0].title, /no profile patch layer/);
 });
 
 /* ---------------------------------------------------------------- D014 */

@@ -545,6 +545,7 @@ export const CHECKS = [
   checkProfileScratch,
   checkClientInject,
   checkStaleInstalls,
+  checkAnalysisCoverage,
 ];
 
 export {
@@ -562,7 +563,35 @@ export {
   checkProfileScratch,
   checkClientInject,
   checkStaleInstalls,
+  checkAnalysisCoverage,
 };
+
+/* ------------------------------------------------------------------ D015 */
+/**
+ * The worst failure mode for a diagnostic tool is a false clean bill of health,
+ * so a degraded run announces itself as a finding instead of only as a header.
+ */
+function checkAnalysisCoverage(ctx) {
+  const coverage = ctx.availability ?? {};
+  if (!coverage.profileDir) {
+    return [
+      finding('D015', 'warn', 'analysis ran without the profile layer', `the profile directory does not exist, so only the dump was analysed: ${ctx.profileDir}. Every check that reads the profile — installed packages, link kinds, engine ranges, market state, storage hygiene — was skipped, so "no problems found" would not mean this profile is healthy.`, {
+        key: 'D015:profile-dir',
+        where: { file: ctx.profileDir, line: null },
+        fix: 'point --home/--profile at the real installation, or run `check` without --dump so the tree is composed from the live install',
+      }),
+    ];
+  }
+  if (!coverage.patchLayer) {
+    return [
+      finding('D015', 'info', 'no profile patch layer', `there is no readable cordis.patch.yml at ${ctx.patch.path ?? join(ctx.profileDir, 'cordis.patch.yml')}, so nothing can override a bundle layer.`, {
+        key: 'D015:patch-layer',
+        where: { file: ctx.patch.path ?? ctx.profileDir, line: null },
+      }),
+    ];
+  }
+  return [];
+}
 
 export function runChecks(ctx) {
   const findings = [];

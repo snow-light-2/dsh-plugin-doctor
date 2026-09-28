@@ -136,8 +136,24 @@ log contains a known DSH failure" a one-liner in CI.
 | `D012` | info | interrupted atomic writes, or a pile of `.bak` files beside the live config |
 | `D013` | info | a `dsh.client.inject` target that is not an installed package (usually a runtime service) |
 | `D014` | warn | more than one DSH installation exists on disk and the logs point at the wrong one |
+| `D015` | warn / info | the profile layer could not be read, so the run analysed only the dump — reported as a finding rather than a silent pass |
 
 Every check is read-only. `check` never writes to the profile.
+
+### It will not report a false all-clear
+
+A diagnostic tool that prints "no problems found" when it could not actually look
+is worse than one that fails loudly, so:
+
+- a dump with **zero loader entries** is rejected with exit `2` instead of being
+  reported clean — the file is empty or was not produced by `dsh --dump-config`;
+- a `--home` that points at a file rather than a directory is rejected;
+- an offline run whose profile directory does not exist prints
+  `layers profile directory not found — dump-only analysis` in the header **and**
+  raises `D015`, because every check that reads installed packages, link kinds,
+  engine ranges, market state or storage hygiene was skipped.
+
+Pass `--strict` to make that warning fail the run.
 
 ## JSON output for CI
 

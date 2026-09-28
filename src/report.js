@@ -35,6 +35,9 @@ export function printHeader(ctx, out = console.log) {
   out(dim('  dump     ') + `${ctx.dumpPath} ${dim(`(${ctx.dump.entries.length} entries, ${ctx.dump.sections.length} sections)`)}`);
   out(dim('  patch    ') + (ctx.patch.path ?? dim('none')));
   out(dim('  harness  ') + (ctx.hostVersion ?? dim('unknown')) + dim(`  node ${ctx.nodeVersion}`));
+  if (ctx.availability && !ctx.availability.profileDir) {
+    out(yellow('  layers   profile directory not found — dump-only analysis'));
+  }
   out('');
 }
 
@@ -109,6 +112,7 @@ export function toJson(ctx, findings, counts) {
     },
     counts,
     ok: counts.error === 0,
+    analysis: ctx.availability ?? null,
     findings: findings.map((item) => ({
       code: item.code,
       severity: item.severity,

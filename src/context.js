@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, lstatSync, readlinkSync, realpathSync } from 'node:fs';
+import { existsSync, readdirSync, lstatSync, readlinkSync, realpathSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 import { parseDump, parsePatch, parseDumpWarnings, enablement, isOn } from './parse.js';
@@ -114,6 +114,13 @@ export function loadContext(options = {}) {
   const profile = options.profile ?? 'web';
   const homeInfo = resolveHome(options.home);
   const home = homeInfo.home;
+
+  if (homeInfo.exists && !statSync(home).isDirectory()) {
+    const error = new Error(`--home is not a directory: ${home}`);
+    error.code = 'EBADHOME';
+    throw error;
+  }
+
   const profileDir = resolveProfileDir(home, profile);
 
   const dumpInfo = readText(options.dump);
@@ -128,6 +135,16 @@ export function loadContext(options = {}) {
   }
 
   const dump = parseDump(dumpInfo.value);
+  // A composed tree always has entries. Zero means the file is empty or is not a
+  // dump at all, and reporting "no problems found" for it would be a lie.
+  if (dump.entries.length === 0) {
+    const error = new Error(
+      `the dump contains no loader entries: ${options.dump}\n` +
+        '  it is empty, or it was not produced by `dsh --profile <name> --dump-config`',
+    );
+    error.code = 'EMPTYDUMP';
+    throw error;
+  }
   const warningsText = options.dumpStderr ? readText(options.dumpStderr) : { ok: false };
   const warnings = warningsText.ok ? parseDumpWarnings(warningsText.value) : [];
 
@@ -191,8 +208,21 @@ export function loadContext(options = {}) {
   const enabled = dump.entries.filter((entry) => isOn(entry.disabled));
   const dynamic = dump.entries.filter((entry) => enablement(entry.disabled) === 'dynamic');
 
+  // What was actually readable. A dump can be analysed on its own -- that is the
+  // point of --dump -- but then every check that needs the profile is skipped,
+  // and the report has to say so instead of quietly printing "no problems found".
+  const availability = {
+    profileDir: existsSync(profileDir),
+    patchLayer: patchText.ok,
+    manifest: manifestInfo.ok,
+    market: marketInfo.ok,
+    nodeModules: existsSync(nodeModulesDir),
+    dumpEntries: dump.entries.length,
+  };
+
   return {
     options,
+    availability,
     home,
     homeInfo,
     profile,
