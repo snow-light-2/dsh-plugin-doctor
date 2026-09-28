@@ -1,0 +1,41 @@
+{
+  "name": "dsh-plugin-doctor",
+  "version": "0.1.0",
+  "description": "Diagnose DeepSeek Harness (DSH) plugin-tree conflicts: shadowed patch layers, market desync, singleton provider clashes, broken generation links.",
+  "type": "module",
+  "bin": {
+    "dsh-plugin-doctor": "bin/dsh-plugin-doctor.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "doctor": "node bin/dsh-plugin-doctor.js"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "cordis",
+    "plugin",
+    "doctor",
+    "diagnostics",
+    "conflict"
+  ],
+  "license": "MIT",
+  "author": "snow-light-2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snow-light-2/dsh-plugin-doctor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/snow-light-2/dsh-plugin-doctor/issues"
+  },
+  "dependencies": {}
+}

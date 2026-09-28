@@ -1,0 +1,1206 @@
+# == @deepseek-ai/dsh-base
+- id: timer
+  name: '@deepseek-ai/cordis-plugin-timer'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: hmr
+  name: '@deepseek-ai/cordis-plugin-hmr'
+  disabled: true
+  config:
+    root:
+      - .
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: llm
+  name: '@deepseek-ai/dsh-llm'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: deepseek-llm-api-extensions
+  name: '@deepseek-ai/dsh-deepseek-llm-api-extensions'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session
+  name: '@deepseek-ai/dsh-session'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session-log-deepseek
+  name: '@deepseek-ai/dsh-session-log-deepseek'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: typert
+  name: '@deepseek-ai/dsh-typert-registry'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: typert-loader
+  name: '@deepseek-ai/dsh-typert-loader'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: typert-gateway
+  name: '@deepseek-ai/dsh-api-gateway'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session-title
+  name: '@deepseek-ai/dsh-session-title'
+  config:
+    fallbackMaxWords: 5
+    fallbackMaxBytes: 40
+    maxTitleBytes: 80
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: session-title-llm
+  name: '@deepseek-ai/dsh-session-title-first-prompt-llm'
+  config:
+    targetWords: 5
+    targetCjkCharacters: 10
+    maxInputBytes: 4096
+    maxOutputTokens: 64
+    timeoutMs: 60000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+  disabled: false
+# == @deepseek-ai/dsh-base
+- id: user-questions
+  name: '@deepseek-ai/dsh-user-questions'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: agent
+  name: '@deepseek-ai/dsh-agent'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: plugin-package-inventory-deepseek
+  name: '@deepseek-ai/dsh-plugin-package-inventory-deepseek'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: agent-default-model
+  name: '@deepseek-ai/dsh-agent-default-model'
+  config:
+    provider: deepseek-official
+    model: deepseek-v4-flash
+    reasoningEffort: high
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base
+- id: jobs
+  name: '@deepseek-ai/dsh-jobs-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: llm-retry
+  name: '@deepseek-ai/dsh-llm-retry'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: settings
+  name: '@deepseek-ai/dsh-settings-file'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: credentials
+  name: '@deepseek-ai/dsh-credentials-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: llm-pi-ai
+  name: '@deepseek-ai/dsh-llm-pi-ai'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+  config:
+    providers:
+      openai:
+        apiKeyEnv: OPENAI_API_KEY
+# == @deepseek-ai/dsh-base
+- id: session-persistence-jsonl
+  name: '@deepseek-ai/dsh-session-persistence-jsonl'
+  config:
+    root: !!js dshHomePath('sessions')
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: attachment-local
+  name: '@deepseek-ai/dsh-attachment-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: session-query-sqlite
+  name: '@deepseek-ai/dsh-session-query-sqlite'
+  config:
+    path: ':memory:'
+    openAt: never
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base
+- id: session-projection
+  name: '@deepseek-ai/dsh-session-projection'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: storage
+  name: '@deepseek-ai/dsh-storage'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: storage-json
+  name: '@deepseek-ai/dsh-storage-json'
+  config:
+    root: !!js dshHomePath('storages')
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: storage-domain
+  name: '@deepseek-ai/dsh-storage-domain'
+  config:
+    backend: json
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session-projection-cache
+  name: '@deepseek-ai/dsh-session-projection-cache'
+  config:
+    writeEveryEvents: 200
+    writeIntervalMs: 5000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session-telemetry-otel
+  name: '@deepseek-ai/dsh-session-telemetry-otel'
+  config:
+    mode: !!js process.env.DSH_TELEMETRY_MODE || 'FEEDBACK_ONLY'
+    shutdownTimeoutMillis: 3000
+    exporter:
+      url: !!js >-
+        process.env.DSH_TELEMETRY_OTLP_URL ??
+        'https://harness-telemetry.deepseeksvc.com/v1/logs'
+      compression: gzip
+      timeoutMillis: 1000
+    processor:
+      scheduledDelayMillis: 10000
+      maxQueueSize: 2048
+      maxExportBatchSize: 2048
+      exportTimeoutMillis: 1500
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: subprocess
+  name: '@deepseek-ai/dsh-subprocess-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: sandbox
+  name: '@deepseek-ai/dsh-sandbox-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: sandbox-policy
+  name: '@deepseek-ai/dsh-sandbox-policy'
+  config:
+    mode: !!js process.env.DSH_PERMISSION_MODE ?? 'workspace-write'
+    workspaceRoot: !!js process.cwd()
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: bash-sandbox
+  name: '@deepseek-ai/dsh-bash-sandbox'
+  disabled: !!js process.platform === 'win32'
+  config:
+    timeoutMs: 60000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: pwsh-sandbox
+  name: '@deepseek-ai/dsh-pwsh-sandbox'
+  disabled: !!js process.platform !== 'win32'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: approval
+  name: '@deepseek-ai/dsh-user-approval'
+  config:
+    policy: !!js >-
+      (process.env.DSH_PERMISSION_MODE ?? 'workspace-write') ===
+      'danger-full-access' ? 'never' : 'ask'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: permission
+  name: '@deepseek-ai/dsh-permission-presets'
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: shell-env
+  name: '@deepseek-ai/dsh-shell-env'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-bash
+  name: '@deepseek-ai/dsh-tool-bash'
+  disabled: true
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: tool-pwsh
+  name: '@deepseek-ai/dsh-tool-pwsh'
+  disabled: true
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: tool-jobs
+  name: '@deepseek-ai/dsh-tool-jobs'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: fs-observation-policy
+  name: '@deepseek-ai/dsh-fs-observation-policy'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-fs
+  name: '@deepseek-ai/dsh-tool-fs'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-fs-search
+  name: '@deepseek-ai/dsh-tool-fs-search'
+  config:
+    sampleOverCapGlobResults: false
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: agent-instructions
+  name: '@deepseek-ai/dsh-agent-instructions'
+  config:
+    maxBytes: 65536
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: skill
+  name: '@deepseek-ai/dsh-skill'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: skill-filesystem
+  name: '@deepseek-ai/dsh-skill-filesystem'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: skill-badge
+  name: '@deepseek-ai/dsh-skill-badge'
+  disabled: true
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-skill
+  name: '@deepseek-ai/dsh-tool-skill'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: commands
+  name: '@deepseek-ai/dsh-commands'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: command-feedback
+  name: '@deepseek-ai/dsh-command-feedback'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: goal
+  name: '@deepseek-ai/dsh-goal'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: goal-round-driver
+  name: '@deepseek-ai/dsh-goal-round-driver'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: command-goal
+  name: '@deepseek-ai/dsh-command-goal'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: plan-mode
+  name: '@deepseek-ai/dsh-plan-mode'
+  config:
+    section: >
+      You are in plan mode. Stay in plan mode until exit_plan_mode succeeds or
+      the user switches the session mode. Imperative language to implement
+      changes means plan the implementation, not execute it. A user's
+      conversational agreement — including an answer confirming something you
+      asked — approves nothing and does not end plan mode; fold the confirmed
+      decision into the plan and submit it through exit_plan_mode.
+
+
+      Explore first. Use non-mutating reads, searches, static analysis, and
+      checks to ground the plan in the actual repository. Do not edit or write
+      files, change configuration, run formatters or code generation that
+      rewrites tracked files, commit, or otherwise carry out the plan. Prefer
+      existing functions and patterns over new machinery.
+
+
+      The tool catalog stays the same across modes for request-cache stability.
+      These plan-mode rules override any later tool description or guidance that
+      suggests using mutation tools; those tools remain listed only to keep the
+      request shape stable. Do not use todo_write to track this planning phase:
+      it tracks implementation after an approved plan, while the plan itself
+      belongs in exit_plan_mode.
+
+
+      Resolve discoverable facts by inspection. Use ask_user_question only for
+      user-owned choices or material ambiguity that inspection cannot answer. Do
+      not ask the user where code lives or how current behavior works when you
+      can find out.
+
+
+      Make the plan decision-complete: state the goal and success criteria;
+      group implementation changes by subsystem; identify public API, schema,
+      and data-flow changes; cover edge cases, failure modes, tests, acceptance
+      criteria, and explicit assumptions. Keep it concise enough to review but
+      detailed enough that another engineer can implement it without making
+      design decisions.
+
+
+      When ready, call exit_plan_mode with the complete plan markdown, starting
+      with a # title. Make exit_plan_mode the only and final tool call in that
+      assistant response: it presents the plan for approval, and implementation
+      begins only in a later step after approval. Do not paste the final plan as
+      a plain reply or ask "should I proceed?" through prose or
+      ask_user_question. If review rejects it, incorporate the feedback and
+      present again. If the review channel is unavailable or aborted, stay in
+      plan mode and ask the user to switch modes manually; do not proceed with
+      implementation.
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: token-meter
+  name: '@deepseek-ai/dsh-token-meter'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app, billion-context
+- id: compaction-basic
+  name: '@deepseek-ai/dsh-compaction-basic'
+  __dshPluginOwner:
+    packageName: billion-context
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\billion-context
+    version: 0.1.169
+  disabled: true
+  config:
+    auto: false
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: command-compact
+  name: '@deepseek-ai/dsh-command-compact'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: subagent
+  name: '@deepseek-ai/dsh-subagent'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: subagent-spawn-in-process
+  name: '@deepseek-ai/dsh-subagent-spawn-in-process'
+  config:
+    providerName: spawn
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: subagent-fork-in-process
+  name: '@deepseek-ai/dsh-subagent-fork-in-process'
+  config:
+    providerName: fork
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-subagent-control
+  name: '@deepseek-ai/dsh-tool-subagent-control'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-subagent-list-agents
+  name: '@deepseek-ai/dsh-tool-subagent-control/list-agents'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-subagent
+  name: '@deepseek-ai/dsh-tool-subagent'
+  config:
+    provider: spawn
+    toolName: subagent
+    backgroundMode: continuable
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-subagent-fork
+  name: '@deepseek-ai/dsh-tool-subagent'
+  config:
+    provider: fork
+    toolName: subagent_fork
+    backgroundMode: one-shot
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: workflow-worker-thread
+  name: '@deepseek-ai/dsh-workflow-worker-thread'
+  config:
+    provider: spawn
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-workflow
+  name: '@deepseek-ai/dsh-tool-workflow'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: timeout-policy
+  name: '@deepseek-ai/dsh-tool-call-timeout-policy'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: spill-local
+  name: '@deepseek-ai/dsh-spill-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: spill-policy
+  name: '@deepseek-ai/dsh-spill-policy'
+  config:
+    maxInlineBytes: 50000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: session-checkpoint-policy
+  name: '@deepseek-ai/dsh-session-checkpoint-policy'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-result-pruner
+  name: '@deepseek-ai/dsh-compaction-tool-result-pruner'
+  config:
+    thresholdChars: 8192
+    headChars: 4096
+    tailChars: 1024
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-todo
+  name: '@deepseek-ai/dsh-tool-todo'
+  config:
+    allowParallelInProgress: true
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-goal
+  name: '@deepseek-ai/dsh-tool-goal'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-ralph
+  name: '@deepseek-ai/dsh-tool-ralph'
+  config:
+    subagentProvider: spawn
+    maxRounds: 64
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tool-str-replace-editor
+  name: '@deepseek-ai/dsh-tool-str-replace-editor'
+  config:
+    maxOutputChars: 16000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+# == @deepseek-ai/dsh-base
+- id: repeat-tool-reminder
+  name: '@deepseek-ai/dsh-repeat-tool-reminder'
+  config:
+    thresholds:
+      - 3
+      - 5
+      - 8
+    argumentsPreviewChars: 500
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: web
+  name: '@deepseek-ai/dsh-web'
+  config:
+    searchProvider: deepseek-official
+    fetchProvider: http
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: web-search-deepseek
+  name: '@deepseek-ai/dsh-web-search-deepseek'
+  config:
+    apiKeyEnv: DEEPSEEK_API_KEY
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: web-fetch-http
+  name: '@deepseek-ai/dsh-web-fetch-http'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base, patched by @deepseek-ai/dsh-web-app
+- id: tool-web
+  name: '@deepseek-ai/dsh-tool-web'
+  config:
+    fetch: true
+    searchTimeoutMs: 60000
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: true
+- id: tools
+  name: '@deepseek-ai/dsh-tools'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  config:
+    mode: !!js process.env.DSH_TOOLS_MODE
+- id: system-prompt
+  name: '@deepseek-ai/dsh-system-prompt'
+  config:
+    persona: >-
+      You are a coding agent powered by the {{model}} model. Your working
+      directory is {{cwd}}.
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-base
+- id: agent-loop
+  name: '@deepseek-ai/dsh-agent-loop'
+  config:
+    agents: []
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: fs-sandbox
+  name: '@deepseek-ai/dsh-fs-sandbox'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+- id: llm-deepseek
+  name: '@deepseek-ai/dsh-llm-deepseek'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-base'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-base
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-web-app
+- id: subagent-model-selection-settings
+  name: '@deepseek-ai/dsh-tool-subagent/model-selection-settings'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: code-runtime
+  name: '@deepseek-ai/dsh-code-runtime-worker-thread'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: message-feedback
+  name: '@deepseek-ai/dsh-message-feedback'
+  config:
+    maxNoteBytes: 8192
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: session-log-download
+  name: '@deepseek-ai/dsh-session-log-export'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: workspace
+  name: '@deepseek-ai/dsh-workspace'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: session-reference
+  name: '@deepseek-ai/dsh-session-reference'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: file-reference-local
+  name: '@deepseek-ai/dsh-file-reference-local'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: session-stats
+  name: '@deepseek-ai/dsh-session-stats'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: session-turn-outline
+  name: '@deepseek-ai/dsh-session-turn-outline'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: directory-picker
+  name: '@deepseek-ai/dsh-host-directory-picker-auto'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: plugin-inventory
+  name: '@deepseek-ai/dsh-host-plugin-inventory'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: session-controller
+  name: '@deepseek-ai/dsh-api-session-controller'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: settings-controller
+  name: '@deepseek-ai/dsh-api-settings-controller'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: workspace-controller
+  name: '@deepseek-ai/dsh-api-workspace-controller'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: cordis-host-runner
+  name: '@deepseek-ai/dsh-cordis-host-runner'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: web-startup
+  name: '@deepseek-ai/dsh-web-app/startup'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: webserver
+  name: '@deepseek-ai/dsh-host-webserver'
+  inject:
+    - webStartup
+  config:
+    host: !!js ctx.webStartup.host ?? '127.0.0.1'
+    port: !!js ctx.webStartup.port ?? 3080
+    compression: gzip
+    compressionLevel: 1
+    compressionThresholdBytes: 1024
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: web-runtime
+  name: '@deepseek-ai/dsh-web-app'
+  inject:
+    - webStartup
+  config:
+    openBrowser: !!js ctx.webStartup.openBrowser
+    printUrl: true
+    surfaceContext: true
+    trustedHosts: !!js ctx.webStartup.trustedHosts
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: client-hmr
+  name: '@deepseek-ai/dsh-client-hmr'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: modules
+  name: '@deepseek-ai/dsh-client-modules'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: connection
+  name: '@deepseek-ai/dsh-client-connection'
+  inject:
+    - webRuntime
+  config:
+    trustedHosts: !!js ctx.webRuntime.trustedHosts
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: api-remotes
+  name: '@deepseek-ai/dsh-api-remotes'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: cordis-client-runner
+  name: '@deepseek-ai/dsh-cordis-client-runner'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-web-app, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: ui-theme
+  name: '@deepseek-ai/dsh-client-ui-theme'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  config:
+    preference: dark
+- id: locale
+  name: '@deepseek-ai/dsh-client-locale'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  config:
+    preference: zh
+# == @deepseek-ai/dsh-web-app
+- id: ui-layout
+  name: '@deepseek-ai/dsh-client-ui-layout'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-renderer
+  name: '@deepseek-ai/dsh-client-ui-renderer'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-session
+  name: '@deepseek-ai/dsh-client-ui-session'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-web-app, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: ui-sidebar
+  name: '@deepseek-ai/dsh-client-ui-sidebar'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: false
+# == @deepseek-ai/dsh-web-app
+- id: ui-settings
+  name: '@deepseek-ai/dsh-client-ui-settings'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-web-app, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: ui-settings-general
+  name: '@deepseek-ai/dsh-client-ui-settings-general'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  disabled: false
+  config:
+    welcomeNoticeVersion: 2026-08-13.1
+# == @deepseek-ai/dsh-web-app
+- id: ui-settings-models
+  name: '@deepseek-ai/dsh-client-ui-settings-models'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-settings-plugin-inventory
+  name: '@deepseek-ai/dsh-client-ui-settings-plugin-inventory'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @deepseek-ai/dsh-web-app, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: ui-conversation
+  name: '@deepseek-ai/dsh-client-ui-conversation'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+  config:
+    busyEnter: steer
+# == @deepseek-ai/dsh-web-app
+- id: ui-approval
+  name: '@deepseek-ai/dsh-client-ui-approval'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-chat
+  name: '@deepseek-ai/dsh-client-ui-chat'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-brand-official
+  name: '@deepseek-ai/dsh-client-ui-brand-official'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-attachment
+  name: '@deepseek-ai/dsh-client-ui-attachment'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-tool
+  name: '@deepseek-ai/dsh-client-ui-tool'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-cordis
+  name: '@deepseek-ai/dsh-client-ui-cordis'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-workflow-run
+  name: '@deepseek-ai/dsh-client-ui-workflow-run'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-deliverables
+  name: '@deepseek-ai/dsh-client-ui-deliverables'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-workspace
+  name: '@deepseek-ai/dsh-client-ui-workspace'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-input-trigger
+  name: '@deepseek-ai/dsh-client-ui-input-trigger'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-commands
+  name: '@deepseek-ai/dsh-client-ui-commands'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-skill
+  name: '@deepseek-ai/dsh-client-ui-skill'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-subagent
+  name: '@deepseek-ai/dsh-client-ui-subagent'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-reference
+  name: '@deepseek-ai/dsh-client-ui-reference'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-schedule
+  name: '@deepseek-ai/dsh-client-ui-schedule'
+  disabled: true
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-jobs
+  name: '@deepseek-ai/dsh-client-ui-jobs'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-goal
+  name: '@deepseek-ai/dsh-client-ui-goal'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-message-feedback
+  name: '@deepseek-ai/dsh-client-ui-message-feedback'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-model-selection
+  name: '@deepseek-ai/dsh-client-ui-model-selection'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-permission
+  name: '@deepseek-ai/dsh-client-ui-permission-presets'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-agent-preset
+  name: '@deepseek-ai/dsh-client-ui-agent-preset'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-settings-plugins
+  name: '@deepseek-ai/dsh-client-ui-settings-plugins'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-plan
+  name: '@deepseek-ai/dsh-client-ui-plan'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-user-questions
+  name: '@deepseek-ai/dsh-client-ui-user-questions'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: ui-trajectory
+  name: '@deepseek-ai/dsh-client-ui-trajectory'
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+- id: agent-presets
+  name: '@deepseek-ai/dsh-agent-presets'
+  config:
+    default: standard
+  __dshPluginOwner:
+    packageName: '@deepseek-ai/dsh-web-app'
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\@deepseek-ai\dsh-web-app
+    version: 0.1.2-rc.1
+# == @dsh-external/dsh-client-ui-skin-deep-whale-manager
+- id: ui-skin-deep-whale-manager
+  name: '@dsh-external/dsh-client-ui-skin-deep-whale-manager'
+  __dshPluginOwner:
+    packageName: '@dsh-external/dsh-client-ui-skin-deep-whale-manager'
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\@dsh-external\dsh-client-ui-skin-deep-whale-manager
+    version: 0.1.0
+# == @dsh-external/dsh-client-ui-skin-maid-atelier
+- id: ui-skin-maid-atelier
+  name: '@dsh-external/dsh-client-ui-skin-maid-atelier'
+  __dshPluginOwner:
+    packageName: '@dsh-external/dsh-client-ui-skin-maid-atelier'
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\@dsh-external\dsh-client-ui-skin-maid-atelier
+    version: 0.0.1
+# == dsh-boot-animation, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: dsh-boot-animation
+  name: dsh-boot-animation
+  __dshPluginOwner:
+    packageName: dsh-boot-animation
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\dsh-boot-animation
+    version: 0.2.2
+  disabled: true
+# == dsh-pet
+- id: pet
+  name: dsh-pet
+  __dshPluginOwner:
+    packageName: dsh-pet
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\dsh-pet
+    version: 0.2.6
+# == dshmarket
+- id: dsh-market
+  name: dshmarket
+  __dshPluginOwner:
+    packageName: dshmarket
+    packageDir: E:\新建文件夹\DSH Desktop\resources\app\node_modules\dshmarket
+    version: 1.45.1
+# == @liustack/modlens
+- id: modlens
+  name: '@liustack/modlens'
+  __dshPluginOwner:
+    packageName: '@liustack/modlens'
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\@liustack\modlens
+    version: 3.26.5
+# == billion-context
+- id: bili-native
+  name: billion-context/dsh
+  __dshPluginOwner:
+    packageName: billion-context
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\billion-context
+    version: 0.1.169
+# == dsh-better-sidebar, patched by C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\cordis.patch.yml
+- id: better-sidebar
+  name: dsh-better-sidebar
+  disabled: true
+  __dshPluginOwner:
+    packageName: dsh-better-sidebar
+    packageDir: >-
+      C:\Users\<user>\AppData\Roaming\dsh-desktop\harness\profiles\web\node_modules\dsh-better-sidebar
+    version: 0.19.1

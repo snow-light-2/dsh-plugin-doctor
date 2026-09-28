@@ -1,0 +1,9 @@
+# Keep the published tree byte-stable across platforms.
+* text=auto eol=lf
+
+# The captured stderr fixture is UTF-16LE with a BOM on purpose: it is exactly
+# what PowerShell writes, and decodeText() is tested against it. Never rewrite it.
+fixtures/dump-web-stderr-real.txt -text
+
+*.png binary
+*.ico binary

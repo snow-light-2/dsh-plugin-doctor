@@ -1,0 +1,7 @@
+node_modules/
+*.log
+*.tmp
+.dsh-doctor/
+!fixtures/*.txt
+!fixtures/*.yml
+!fixtures/*.json

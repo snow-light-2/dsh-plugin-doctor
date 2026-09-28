@@ -1,0 +1,66 @@
+{
+  "name": "dsh-profile-web",
+  "private": true,
+  "dependencies": {
+    "@dsh-external/dsh-client-ui-skin-deep-whale-manager": "link:E:/dsh-deep-whale/skin-manager",
+    "@dsh-external/dsh-client-ui-skin-maid-atelier": "link:E:/dsh-deep-whale/maid-atelier",
+    "dsh-boot-animation": "link:C:/Users/ASUS/.dsh/plugins/dsh-boot-animation",
+    "dsh-pet": "^0.2.6",
+    "dshmarket": "^1.66.3",
+    "billion-context": "0.1.169",
+    "dsh-better-sidebar": "0.19.1",
+    "@liustack/modlens": "3.26.5"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "@dsh-external/dsh-client-ui-skin-deep-whale-manager",
+        "@dsh-external/dsh-client-ui-skin-maid-atelier",
+        "dsh-boot-animation",
+        "dsh-pet",
+        "dshmarket",
+        "@liustack/modlens",
+        "billion-context",
+        "dsh-better-sidebar"
+      ],
+      "patchReload": "live"
+    },
+    "desktop": {
+      "generationProjection": {
+        "version": 1,
+        "plugins": {
+          "billion-context": {
+            "generationId": "billion-context+0.1.169+9358defdf940",
+            "visibleVersion": "0.1.169",
+            "previousOverride": {
+              "present": false
+            }
+          },
+          "dsh-better-sidebar": {
+            "generationId": "dsh-better-sidebar+0.19.1+213f19b64ef8",
+            "visibleVersion": "0.19.1",
+            "previousOverride": {
+              "present": false
+            }
+          },
+          "@liustack/modlens": {
+            "generationId": "liustack+modlens+3.26.5+34fc9203fbd0",
+            "visibleVersion": "3.26.5",
+            "previousOverride": {
+              "present": false
+            }
+          }
+        }
+      }
+    }
+  },
+  "pnpm": {
+    "overrides": {
+      "billion-context": "link:../.generations/live/billion-context+0.1.169+9358defdf940/node_modules/billion-context",
+      "dsh-better-sidebar": "link:../.generations/live/dsh-better-sidebar+0.19.1+213f19b64ef8/node_modules/dsh-better-sidebar",
+      "@liustack/modlens": "link:../.generations/live/liustack+modlens+3.26.5+34fc9203fbd0/node_modules/@liustack/modlens"
+    }
+  }
+}
