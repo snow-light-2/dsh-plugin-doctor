@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { dirname, resolve } from 'node:path';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -16,6 +18,7 @@ import {
   checkStaleInstalls,
   checkDuplicatePackage,
   checkAnalysisCoverage,
+  checkEngines,
 } from '../src/checks.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -330,6 +333,97 @@ test('D008 is silent for a plugin that declares nothing', () => {
     installed: [{ name: 'x', dir: 'NM/x', link: { kind: 'link' }, version: '1.0.0', dsh: {}, manifest: { name: 'x', version: '1.0.0' } }],
   });
   assert.deepEqual(checkDependencyClosure(ctx), []);
+});
+
+/* ---------------------------------------------------------------- D007 */
+// Found by running this tool on its own DSH plugin: the second loop compared a
+// package's OWN version against its `dsh.engines.dsh` range, which declares
+// which HARNESS the plugin needs. A 0.1.0 plugin may declare >=0.1.2-rc.1.
+test('D007 compares the harness version, never the plugin version', () => {
+  const ctx = makeCtx({
+    entries: [on('x', 'x', 'x')],
+    installed: [
+      {
+        name: 'x',
+        dir: REPO, // its package.json declares dsh.engines.dsh >=0.1.2-rc.1
+        link: { kind: 'link' },
+        version: '0.1.0',
+        dsh: { engines: { dsh: '>=0.1.2-rc.1' } },
+        manifest: { name: 'x', version: '0.1.0' },
+      },
+    ],
+    ctx: { hostVersion: '0.1.2-rc.1', loadedDirs: new Map([['x', { dir: REPO, version: '0.1.0' }]]) },
+  });
+  assert.deepEqual(checkEngines(ctx), [], 'a 0.1.0 plugin may legitimately declare >=0.1.2-rc.1');
+});
+
+test('D007 reports the loaded copy when its own range excludes the harness', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'dshdoc-d007-'));
+  writeFileSync(
+    join(dir, 'package.json'),
+    JSON.stringify({ name: 'x', version: '5.0.0', dsh: { engines: { dsh: '>=9.0.0' } } }),
+  );
+
+  const ctx = makeCtx({
+    entries: [on('x', 'x', 'x')],
+    installed: [
+      {
+        name: 'x',
+        dir: 'NM/x',
+        link: { kind: 'link' },
+        version: '5.0.0',
+        // the profile's copy claims to be compatible...
+        dsh: { engines: { dsh: '>=0.1.2-rc.1' } },
+        manifest: { name: 'x', version: '5.0.0' },
+      },
+    ],
+    // ...but this is the copy the tree actually loads, and it does not.
+    ctx: { hostVersion: '0.1.2-rc.1', loadedDirs: new Map([['x', { dir, version: '5.0.0' }]]) },
+  });
+
+  const findings = checkEngines(ctx);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].key, 'D007:loaded:x');
+  assert.match(findings[0].message, /actually loads/);
+});
+
+test('D007 reports a plugin whose declared range excludes the harness', () => {
+  const ctx = makeCtx({
+    entries: [on('x', 'x', 'x')],
+    installed: [
+      {
+        name: 'x',
+        dir: 'NM/x',
+        link: { kind: 'link' },
+        version: '0.2.2',
+        dsh: { engines: { dsh: '>=0.1.5-rc.1' } },
+        manifest: { name: 'x', version: '0.2.2' },
+      },
+    ],
+    ctx: { hostVersion: '0.1.2-rc.1' },
+  });
+  const findings = checkEngines(ctx);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].severity, 'error');
+  assert.match(findings[0].message, /requires `dsh\.engines\.dsh` >=0\.1\.5-rc\.1/);
+});
+
+test('D007 keeps a disabled plugin at info, not error', () => {
+  const ctx = makeCtx({
+    entries: [off('x', 'x', 'x')],
+    installed: [
+      {
+        name: 'x',
+        dir: 'NM/x',
+        link: { kind: 'link' },
+        version: '0.2.2',
+        dsh: { engines: { dsh: '>=0.1.5-rc.1' } },
+        manifest: { name: 'x', version: '0.2.2' },
+      },
+    ],
+    ctx: { hostVersion: '0.1.2-rc.1' },
+  });
+  assert.equal(checkEngines(ctx)[0].severity, 'info');
 });
 
 /* ---------------------------------------------------------------- D015 */

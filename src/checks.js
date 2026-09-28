@@ -290,20 +290,28 @@ function checkEngines(ctx) {
       }),
     );
   }
+  // The loop above reads the profile's installed copy. This one reads the copy
+  // the tree ACTUALLY loads, which is a different directory whenever a package
+  // is shadowed (see D011) — and the loaded copy is the one whose engine range
+  // decides whether it runs.
+  //
+  // Both loops compare `ctx.hostVersion` against the declared range. They must
+  // never compare the package's OWN version: `dsh.engines.dsh` states which
+  // harness the plugin needs, so a 0.1.0 plugin is perfectly entitled to declare
+  // `>=0.1.2-rc.1`. Doing otherwise reported every plugin as violating its own
+  // range — which is how this bug was found, by the tool running on itself.
   for (const [name, loaded] of ctx.loadedDirs) {
-    if (!loaded.version || !ctx.hostVersion) continue;
-    const pkg = ctx.installedByName.get(name);
-    if (!pkg) continue;
-    const declared = pkg.dsh?.engines?.dsh;
-    if (typeof declared !== 'string') continue;
-    const owned = ctx.dump.entries.filter((entry) => entry.owner === name && isOn(entry.disabled));
-    if (owned.length === 0) continue;
-    const result = satisfies(loaded.version, declared);
-    if (result !== false) continue;
+    if (!loaded.dir) continue;
+    const manifest = readJson(join(loaded.dir, 'package.json'));
+    if (!manifest.ok) continue;
+    const declared = manifest.value?.dsh?.engines?.dsh;
+    if (typeof declared !== 'string' || declared.trim() === '') continue;
+    if (satisfies(ctx.hostVersion, declared) !== false) continue;
     out.push(
-      finding('D007', 'error', 'loaded plugin version violates its own engine range', `"${name}@${loaded.version}" is loaded but declares \`dsh.engines.dsh\` ${declared} (harness ${ctx.hostVersion}).`, {
+      finding('D007', 'error', 'the copy the tree loads does not support this harness', `"${name}@${manifest.value.version ?? '?'}" is the copy the composed tree actually loads (from ${loaded.dir}), and it declares \`dsh.engines.dsh\` ${declared}; the harness is ${ctx.hostVersion}.`, {
         key: `D007:loaded:${name}`,
         where: { file: loaded.dir, line: null },
+        fix: 'the tree is loading a different copy than the one the profile installed — see D011',
       }),
     );
   }
