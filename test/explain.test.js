@@ -98,8 +98,10 @@ test('a healthy log matches nothing', () => {
 test('every signature is well formed', () => {
   for (const signature of SIGNATURES) {
     assert.ok(signature.id && !/\s/.test(signature.id), `bad id: ${signature.id}`);
-    assert.ok(signature.re instanceof RegExp, `${signature.id} has no regex`);
+    assert.ok(signature.re instanceof RegExp || signature.packedRe instanceof RegExp, `${signature.id} has no pattern`);
+    assert.ok(!(signature.re && signature.packedRe), `${signature.id} must use exactly one matching mode`);
     assert.ok(signature.title && signature.why && signature.fix, `${signature.id} is missing prose`);
-    assert.equal(signature.re.flags.includes('g'), false, `${signature.id} must not be global (lastIndex state)`);
+    if (signature.re) assert.equal(signature.re.flags.includes('g'), false, `${signature.id} must not be global (lastIndex state)`);
+    if (signature.packedRe) assert.equal(/\s/.test(signature.packedRe.source), false, `${signature.id} packed pattern must not contain whitespace`);
   }
 });

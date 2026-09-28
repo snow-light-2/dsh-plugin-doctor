@@ -7,7 +7,7 @@ import { loadContext } from './context.js';
 import { runChecks, summarize } from './checks.js';
 import { printHeader, printFindings, printSummary, printGraph, toJson } from './report.js';
 import { explainText } from './explain.js';
-import { resolveHome, resolveDshBin, dshBinHelp } from './paths.js';
+import { resolveHome, resolveDshBin, dshBinHelp, readText, decodeText } from './paths.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PKG = JSON.parse(readFileSync(resolve(HERE, '..', 'package.json'), 'utf8'));
@@ -194,14 +194,14 @@ function cmdExplain(flags) {
   const file = flags._[0];
   let text;
   if (file && file !== '-') {
-    try {
-      text = readFileSync(resolve(file), 'utf8');
-    } catch (error) {
-      return fail(`cannot read ${file}: ${error.message}`);
-    }
+    // Logs redirected by PowerShell arrive as UTF-16LE, so read through the
+    // BOM-aware reader rather than assuming utf8.
+    const read = readText(resolve(file));
+    if (!read.ok) return fail(`cannot read ${file}: ${read.error}`);
+    text = read.value;
   } else {
     try {
-      text = readFileSync(0, 'utf8');
+      text = decodeText(readFileSync(0));
     } catch (error) {
       return fail(`cannot read stdin: ${error.message}`);
     }
@@ -236,13 +236,20 @@ function cmdExplain(flags) {
 /* ------------------------------------------------------------------ main */
 export async function main(argv) {
   const flags = parseArgs(argv);
-  if (flags.help || flags.h || flags._.length === 0) {
-    console.log(USAGE);
-    return flags._.length === 0 && !flags.help && !flags.h ? 2 : 0;
-  }
+
+  // Version and help must be answered before the "no command given" branch,
+  // otherwise `--version` alone is indistinguishable from an empty invocation.
   if (flags.version || flags.v) {
     console.log(PKG.version);
     return 0;
+  }
+  if (flags.help || flags.h) {
+    console.log(USAGE);
+    return 0;
+  }
+  if (flags._.length === 0) {
+    console.log(USAGE);
+    return 2;
   }
 
   const command = flags._.shift();

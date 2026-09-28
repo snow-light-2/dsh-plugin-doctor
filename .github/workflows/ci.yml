@@ -1,0 +1,74 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # There is no install step on purpose: the tool has no dependencies, and a
+  # diagnostic that needs a working package manager cannot diagnose an install
+  # whose package manager is broken.
+  unit:
+    name: unit (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['18', '20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: node --test
+        run: node --test
+
+  cli:
+    name: cli contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: --version prints a version and exits 0
+        run: |
+          out=$(node bin/dsh-plugin-doctor.js --version)
+          echo "$out"
+          echo "$out" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'
+
+      - name: graph renders the committed dump offline
+        run: node bin/dsh-plugin-doctor.js graph --dump fixtures/dump-web-real.txt --home fixtures/no-such-home
+
+      - name: check exits 1 on the committed fixture
+        run: |
+          set +e
+          node bin/dsh-plugin-doctor.js check \
+            --dump fixtures/dump-web-real.txt \
+            --dump-stderr fixtures/dump-web-stderr-real.txt \
+            --patch fixtures/patch-web-real.yml \
+            --home fixtures/no-such-home --json --strict > /tmp/report.json
+          code=$?
+          set -e
+          node -e "const r=require('/tmp/report.json'); if(!r.findings.length) process.exit(1); console.log('findings:', r.findings.length, r.counts)"
+          test "$code" -eq 1
+
+      - name: explain reads a UTF-16LE log
+        run: |
+          set +e
+          node bin/dsh-plugin-doctor.js explain fixtures/dump-web-stderr-real.txt
+          code=$?
+          set -e
+          test "$code" -eq 1
+
+      - name: an empty invocation is a usage error
+        run: |
+          set +e
+          node bin/dsh-plugin-doctor.js > /dev/null
+          code=$?
+          set -e
+          test "$code" -eq 2

@@ -1,5 +1,7 @@
 # dsh-plugin-doctor
 
+[![test](https://github.com/snow-light-2/dsh-plugin-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/snow-light-2/dsh-plugin-doctor/actions/workflows/ci.yml)
+
 Diagnose **DeepSeek Harness (DSH)** plugin-tree conflicts from the command line.
 
 DSH composes a plugin tree from four layers — bundle patches, the profile patch,
@@ -105,8 +107,11 @@ what to pass. You can also pin it once per machine:
 | code | meaning |
 | --- | --- |
 | `0` | clean (or only warnings, without `--strict`) |
-| `1` | findings at or above the failure threshold |
+| `1` | findings at or above the failure threshold — or, for `explain`, at least one known failure signature matched |
 | `2` | usage error, or the profile could not be read |
+
+`explain` returning `1` on a match is deliberate: it makes "fail the build if this
+log contains a known DSH failure" a one-liner in CI.
 
 ## Checks
 
@@ -198,6 +203,9 @@ dsh-plugin-doctor check --json --strict
 ```bash
 npm test          # node --test, no dependencies
 ```
+
+CI runs the same command on Node 18, 20 and 22 across Linux and Windows, plus a
+`cli` job that asserts the exit-code contract against the committed fixtures.
 
 The suite runs against real captured artifacts in `fixtures/` — a composed tree,
 a profile patch, DSH's own stderr (in UTF-16LE, exactly as PowerShell writes it),

@@ -142,7 +142,9 @@ export const SIGNATURES = [
   },
   {
     id: 'patch-mismatch',
-    re: /patch: name mismatch for "([^"]+)" \(expected "([^"]+)", got "([^"]+)"\), skipping/,
+    // Console hosts hard-wrap long lines mid-token, so this one is matched
+    // against a whitespace-free view of the log (see packedRe below).
+    packedRe: /patch:namemismatchfor"([^"]*)"\(expected"([^"]*)",got"([^"]*)"\),skipping/,
     title: 'a patch entry was skipped',
     why: 'a patch entry declared a `name:` that disagrees with the bundle that defines the id. DSH drops the whole entry, so its `config:` never applies — silently.',
     fix: 'set `name:` to the value DSH expected, or delete the `name:` line.',
@@ -150,7 +152,7 @@ export const SIGNATURES = [
   },
   {
     id: 'patch-orphan',
-    re: /patch: entry "([^"]+)" not found/,
+    packedRe: /patch:entry"([^"]*)"notfound/,
     title: 'a patch entry matched nothing',
     why: 'the id does not exist in the composed tree. Harmless when the entry only sets `disabled: true` (a guard), otherwise a typo.',
     fix: 'fix the id, or keep it deliberately as a guard against a plugin being reinstalled.',
@@ -167,6 +169,26 @@ export const SIGNATURES = [
 ];
 
 /**
+ * A whitespace-free rendering of the log plus, for each packed character, the
+ * line it came from. A console host can break a line inside any token, and a
+ * patch id or package name never contains whitespace, so matching the packed
+ * form repairs the wrapping exactly rather than heuristically.
+ */
+function buildPacked(lines) {
+  const chars = [];
+  const lineOf = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    for (const ch of line) {
+      if (/\s/.test(ch)) continue;
+      chars.push(ch);
+      lineOf.push(i + 1);
+    }
+  }
+  return { packed: chars.join(''), lineOf };
+}
+
+/**
  * Group matches by signature so a log that repeats one problem a hundred times
  * still reads as one problem; the newest occurrence supplies the details.
  */
@@ -175,50 +197,59 @@ export function explainText(text) {
   const byId = new Map();
   const order = [];
 
-  for (const [index, line] of lines.entries()) {
-    for (const signature of SIGNATURES) {
-      const m = signature.re.exec(line);
-      if (!m) continue;
-      const lineNumber = index + 1;
-      const groups = m.slice(1).filter((value) => value !== undefined);
-      const described = typeof signature.describe === 'function' ? signature.describe(groups) : null;
-
-      const existing = byId.get(signature.id);
-      if (!existing) {
-        const hit = {
-          id: signature.id,
-          line: lineNumber,
-          firstLine: lineNumber,
-          occurrences: 1,
-          title: signature.title,
-          why: signature.why,
-          fix: signature.fix,
-          code: signature.code ?? null,
-          match: m[0].trim(),
-          groups,
-        };
-        if (described) Object.assign(hit, described);
-        byId.set(signature.id, hit);
-        order.push(hit);
-        continue;
-      }
-
+  const record = (signature, lineNumber, groups, match) => {
+    const described = typeof signature.describe === 'function' ? signature.describe(groups) : null;
+    const existing = byId.get(signature.id);
+    if (existing) {
       existing.occurrences += 1;
       existing.line = lineNumber;
-      existing.match = m[0].trim();
+      existing.match = match;
       existing.groups = groups;
       if (described) Object.assign(existing, described);
-      else {
-        existing.title = signature.title;
-        existing.why = signature.why;
-        existing.fix = signature.fix;
+      else Object.assign(existing, { title: signature.title, why: signature.why, fix: signature.fix });
+      return;
+    }
+    const hit = {
+      id: signature.id,
+      line: lineNumber,
+      firstLine: lineNumber,
+      occurrences: 1,
+      title: signature.title,
+      why: signature.why,
+      fix: signature.fix,
+      code: signature.code ?? null,
+      match,
+      groups,
+    };
+    if (described) Object.assign(hit, described);
+    byId.set(signature.id, hit);
+    order.push(hit);
+  };
+
+  let packedView = null;
+
+  for (const signature of SIGNATURES) {
+    if (signature.packedRe) {
+      packedView ??= buildPacked(lines);
+      const re = new RegExp(signature.packedRe.source, 'g');
+      for (const m of packedView.packed.matchAll(re)) {
+        const lineNumber = packedView.lineOf[m.index] ?? 1;
+        const groups = m.slice(1).map((value) => String(value ?? '').replace(/\s+/g, ''));
+        record(signature, lineNumber, groups, (lines[lineNumber - 1] ?? '').trim());
       }
+      continue;
+    }
+
+    const re = signature.re;
+    for (const [index, line] of lines.entries()) {
+      const m = re.exec(line);
+      if (!m) continue;
+      record(signature, index + 1, m.slice(1).filter((value) => value !== undefined), m[0].trim());
     }
   }
 
-  const hits = order;
-  hits.sort((a, b) => a.firstLine - b.firstLine);
-  return { lines: lines.length, hits };
+  order.sort((a, b) => a.firstLine - b.firstLine);
+  return { lines: lines.length, hits: order };
 }
 
 export { EXIT_CODES };
