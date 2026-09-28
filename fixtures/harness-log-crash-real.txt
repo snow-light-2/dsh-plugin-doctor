@@ -1,0 +1,22 @@
+# Real excerpt from %APPDATA%\dsh-desktop\logs\harness.log
+# Local paths redacted. Lines are verbatim, in their original order and
+# original (sometimes console-wrapped) formatting.
+
+[node] Harness process exited (exit code 1073807364 (0x40010004))
+[node] Harness process exited (exit code 1073807364 (0x40010004))
+[desktop] plugin recovery detection: unresolved
+[node] Harness process exited (exit code 1073807364 (0x40010004))
+[2026-09-28T11:03:21.922Z] + 9738ms [stderr] [harness-log] warn root: patch: entry "better-sidebar" not found
+[2026-09-28T11:03:22.141Z] + 9958ms [stderr] [harness-log] warn root: patch: entry "better-sidebar" not found
+[2026-09-28T11:03:22.480Z] +10296ms [stderr] [harness-log] warn root: patch: entry "better-sidebar" not found
+[stderr] [harness-node] plugin failures: {"version":1,"failures":[{"stage":"import","entryId":"remote-web-ui","packageName":"@linxin666/dsh-remote-web-ui","owner":{"packageName":"@linxin666/dsh-remote-web-ui","packageDir":"C:\\Users\\ASUS\\AppData\\Roaming\\dsh-desktop\\harness\\profiles\\web\\node_modules\\@linxin666\\dsh-remote-web-ui","version":"0.4.3"},"chain":[{"entryId":"remote-web-ui","packageName":"@linxin666/dsh-remote-web-ui","baseUrl":"file:///C:/Users/ASUS/AppData/Roaming/dsh-desktop/harness/profiles/web/"},{"entryId":"include","packageName":"cordis:include","baseUrl":"file:///C:/Users/ASUS/AppData/Roaming/dsh-desktop/harness/profiles/web/"}],"message":"z.number(...).step(...).min(...).default(...).volatile is not a function"}]}
+[stderr] [harness-node] DSH entry failed: Error: dsh: plugin tree failed to load: failed to apply loader entry include (cordis:include): failed to import loader entry remote-web-ui (@linxin666/dsh-remote-web-ui): z.number(...).step(...).min(...).default(...).volatile is not a function
+[stderr] TypeError: z.number(...).step(...).min(...).default(...).volatile is not a function
+[desktop] profile package maintenance deferred while plugin removal is pending verification
+[stderr] [harness-node] DSH entry failed: Error: dsh: plugin tree failed to load: failed to apply loader entry include (cordis:include): failed to apply loader entry session-title-llm (@deepseek-ai/dsh-session-title-first-prompt-llm): session-title provider "michengai-codex-ui-session-title" is already registered
+[stderr] Error: session-title provider "michengai-codex-ui-session-title" is already registered
+[desktop] profile package maintenance deferred while plugin removal is pending verification
+[desktop] plugin recovery detection: unresolved
+[desktop] safe mode: third-party web profile bundles are blocked
+[desktop] plugin recovery detection: unresolved
+[desktop] safe mode: third-party web profile bundles are blocked

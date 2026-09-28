@@ -1,7 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { explainText, SIGNATURES } from '../src/explain.js';
+import { readText } from '../src/paths.js';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const fixture = (name) => readText(resolve(HERE, '..', 'fixtures', name)).value;
 
 const CRASH_LOG = [
   '[desktop] profile web',
@@ -24,10 +30,12 @@ test('a real crash log is explained end to end', () => {
 
   const tree = hits.find((hit) => hit.id === 'tree-load-failed');
   assert.deepEqual(tree.groups, [
+    'apply',
     'session-title-llm',
     '@deepseek-ai/dsh-session-title-first-prompt-llm',
     'session-title provider "michengai-codex-ui-session-title" is already registered',
   ]);
+  assert.match(tree.why, /threw inside apply\(\)/);
 
   const singleton = hits.find((hit) => hit.id === 'singleton-registered');
   assert.equal(singleton.code, 'D004');
@@ -64,6 +72,44 @@ test('repeated signatures collapse into one finding', () => {
   assert.equal(hits[0].occurrences, 12);
   assert.equal(hits[0].firstLine, 1);
   assert.equal(hits[0].line, 12);
+});
+
+test('two different plugins failing to load stay two findings', () => {
+  const log = [
+    'DSH entry failed: Error: dsh: plugin tree failed to load: failed to apply loader entry include (cordis:include): failed to import loader entry remote-web-ui (@linxin666/dsh-remote-web-ui): boom',
+    'DSH entry failed: Error: dsh: plugin tree failed to load: failed to apply loader entry include (cordis:include): failed to apply loader entry session-title-llm (@deepseek-ai/dsh-session-title-first-prompt-llm): already registered',
+  ].join('\n');
+  const tree = explainText(log).hits.filter((hit) => hit.id === 'tree-load-failed');
+  assert.equal(tree.length, 2, 'grouping by entry id must not merge distinct failures');
+  assert.deepEqual(tree.map((hit) => hit.groups[1]), ['remote-web-ui', 'session-title-llm']);
+
+  const imported = tree.find((hit) => hit.groups[0] === 'import');
+  assert.match(imported.why, /never initialised/);
+  const applied = tree.find((hit) => hit.groups[0] === 'apply');
+  assert.match(applied.why, /inside apply\(\)/);
+});
+
+test('a real incident log yields every root cause, separately', () => {
+  const { lines, hits } = explainText(fixture('harness-log-crash-real.txt'));
+  assert.ok(lines > 10);
+
+  const byId = (id) => hits.filter((hit) => hit.id === id);
+
+  // Both live incidents are present and are not merged with each other.
+  assert.deepEqual(byId('tree-load-failed').map((hit) => hit.groups[1]).sort(), ['remote-web-ui', 'session-title-llm']);
+  assert.match(byId('schema-drift')[0].match, /\.volatile is not a function/);
+  assert.equal(byId('singleton-registered')[0].groups[0], 'michengai-codex-ui-session-title');
+
+  // Repetition is counted, not repeated.
+  assert.equal(byId('crash-code')[0].occurrences, 3);
+  assert.match(byId('crash-code')[0].title, /terminated, not crashed/);
+  assert.equal(byId('patch-orphan')[0].groups[0], 'better-sidebar');
+  assert.equal(byId('patch-orphan')[0].occurrences, 3);
+  assert.equal(byId('safe-mode')[0].occurrences, 2);
+  assert.equal(byId('recovery-pending')[0].occurrences, 2);
+
+  // Nothing in the fixture is mistaken for a crash.
+  for (const hit of hits) assert.doesNotMatch(hit.why, /stack buffer overrun/);
 });
 
 test('plain warnings keep their advice', () => {

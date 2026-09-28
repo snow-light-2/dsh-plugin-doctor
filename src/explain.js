@@ -54,10 +54,21 @@ export const SIGNATURES = [
     id: 'tree-load-failed',
     // Greedy prefix so the *innermost* failing entry is attributed: a failure is
     // reported as `... entry include (cordis:include): ... entry X (pkg): <error>`.
-    re: /plugin tree failed to load:.*failed to apply loader entry\s+(\S+)\s*\(([^)]+)\):\s*(.+)$/m,
+    // Both stages occur in practice: `import` means the module never loaded,
+    // `apply` means it loaded and then threw while registering.
+    re: /plugin tree failed to load:.*failed to (apply|import) loader entry\s+(\S+)\s*\(([^)]+)\):\s*(.+)$/m,
+    // Two entries failing at two different times are two different problems,
+    // even though the harness prints both under one message shape.
+    groupBy: (groups) => groups[1],
     title: 'the plugin tree failed to load',
-    why: 'the loader built the entry list, then one entry threw inside apply(). Every plugin that had not started yet is skipped, so the app looks half-built rather than broken.',
+    why: 'the loader builds the entry list and then applies each entry in order; the first one that throws aborts the whole tree.',
     fix: 'read the trailing error — it names the real conflict; then disable that entry in the profile patch.',
+    describe: (groups) => ({
+      why:
+        groups[0] === 'import'
+          ? `importing entry "${groups[1]}" threw, so that plugin never initialised at all — usually a missing or incompatible dependency.`
+          : `entry "${groups[1]}" imported fine and then threw inside apply(). Every entry that had not started yet is skipped, so the app looks half-built rather than broken.`,
+    }),
     code: null,
   },
   {
@@ -199,7 +210,11 @@ export function explainText(text) {
 
   const record = (signature, lineNumber, groups, match) => {
     const described = typeof signature.describe === 'function' ? signature.describe(groups) : null;
-    const existing = byId.get(signature.id);
+    // Distinct instances of one signature are distinct problems: two plugins
+    // failing to load, or two different exit codes, must not merge into one hit.
+    const identity = typeof signature.groupBy === 'function' ? signature.groupBy(groups) : (groups[0] ?? '');
+    const key = `${signature.id}:${identity}`;
+    const existing = byId.get(key);
     if (existing) {
       existing.occurrences += 1;
       existing.line = lineNumber;
@@ -222,7 +237,7 @@ export function explainText(text) {
       groups,
     };
     if (described) Object.assign(hit, described);
-    byId.set(signature.id, hit);
+    byId.set(key, hit);
     order.push(hit);
   };
 
