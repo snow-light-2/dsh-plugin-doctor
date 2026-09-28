@@ -1,0 +1,13 @@
+# Bundle patch for dsh-plugin-doctor.
+#
+# This is what makes the package a PROFILE LAYER rather than an inert
+# dependency. DSH reconciles `dsh.profile.bundles` against installed packages: a
+# dependency whose manifest declares `dsh.bundle.patch` (package.json) joins the
+# layer stack and the row below mounts the plugin.
+#
+# Note what this file does NOT do: it disables nothing, and it overrides no
+# other entry. A diagnostic tool that reached the tree by switching other
+# plugins off would be indistinguishable from the conflicts it reports.
+- insert:
+    - id: dsh-plugin-doctor
+      name: dsh-plugin-doctor

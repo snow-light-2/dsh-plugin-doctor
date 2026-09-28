@@ -71,6 +71,54 @@ dsh-plugin-doctor check
 There is nothing to install: the package has no dependencies, and `git clone` plus
 `node bin/dsh-plugin-doctor.js` is a complete installation.
 
+## Use it inside DSH
+
+The same package is also a DSH plugin. Installed into a profile it adds a
+**诊断** button to the sidebar footer; clicking it opens a panel that renders the
+same report, with *re-check* and *copy JSON* actions so a finding can go straight
+into a bug report.
+
+It registers **one** seat in `sidebar.footer.action` and **one** HTTP route, and
+its bundle patch disables nothing:
+
+- `sidebar.footer.action` is a `kind: "list"` slot, so it coexists with whatever
+  else sits there. `sidebar.settings` is `kind: "single"` and already has an
+  owner, and `shell.overlay` is where other plugins seat themselves — doctor
+  claims neither.
+- The panel is drawn from inside the button with `position: fixed` rather than
+  through an overlay slot, precisely so that one registration is enough.
+- `cordis.patch.yml` contains a single `insert:` row. A plugin that reported
+  other plugins for crowding each other out has no business crowding anything
+  out.
+
+The checks run in a **child process**, not on the harness event loop: they read
+the filesystem, spawn `dsh --dump-config`, and can block for seconds. That also
+means a check that throws kills a subprocess instead of the harness — a
+diagnostic tool that can take down the thing it is diagnosing is not a
+diagnostic tool.
+
+### Installing it into a profile
+
+With DSH **closed**, from the profile directory
+(`%APPDATA%\dsh-desktop\harness\profiles\<profile>`):
+
+```bash
+# make the package reachable from the profile's install closure
+pnpm add file:/path/to/dsh-plugin-doctor
+```
+
+The package declares `dsh.bundle.patch`, so on the next boot DSH reconciles it
+into the layer stack and the inserted row mounts the plugin. If your install path
+does not do that automatically, add `dsh-plugin-doctor` to
+`dsh.profile.bundles` in the profile's `package.json`.
+
+Verify before restarting:
+
+```bash
+node bin/dsh-plugin-doctor.js check
+dsh --profile <profile> --dump-config | findstr dsh-plugin-doctor
+```
+
 ## Commands
 
 | command | what it does |

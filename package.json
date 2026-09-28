@@ -3,6 +3,13 @@
   "version": "0.1.0",
   "description": "Diagnose DeepSeek Harness (DSH) plugin-tree conflicts: shadowed patch layers, market desync, singleton provider clashes, broken generation links.",
   "type": "module",
+  "main": "./plugin/host.js",
+  "exports": {
+    ".": "./plugin/host.js",
+    "./client": "./plugin/client.js",
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
   "bin": {
     "dsh-plugin-doctor": "bin/dsh-plugin-doctor.js"
   },
@@ -12,12 +19,28 @@
   "files": [
     "bin",
     "src",
+    "plugin",
+    "cordis.patch.yml",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "test": "node --test",
     "doctor": "node bin/dsh-plugin-doctor.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    },
+    "engines": {
+      "dsh": ">=0.1.2-rc.1"
+    }
   },
   "keywords": [
     "dsh",
