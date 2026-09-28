@@ -99,18 +99,34 @@ diagnostic tool.
 
 ### Installing it into a profile
 
-With DSH **closed**, from the profile directory
-(`%APPDATA%\dsh-desktop\harness\profiles\<profile>`):
+Use the installer. It exists because installing a plugin into DSH is the exact
+operation that produces the failures this tool diagnoses:
 
 ```bash
-# make the package reachable from the profile's install closure
-pnpm add file:/path/to/dsh-plugin-doctor
+# DSH Desktop must be fully closed first.
+node scripts/install-plugin.mjs             # refuses if DSH is running
+node scripts/install-plugin.mjs --dry-run   # compose and report; write nothing
+node scripts/install-plugin.mjs --uninstall
 ```
 
-The package declares `dsh.bundle.patch`, so on the next boot DSH reconciles it
-into the layer stack and the inserted row mounts the plugin. If your install path
-does not do that automatically, add `dsh-plugin-doctor` to
-`dsh.profile.bundles` in the profile's `package.json`.
+On Windows, `install-into-dsh.cmd` does the same thing on a double-click.
+
+It **refuses to run while DSH Desktop is open**, because the market rewrites
+`dsh.profile.bundles` on boot and would race the edit. It **refuses to install
+into a profile that already reports errors**, because stacking a change onto a
+broken tree destroys your ability to tell which change broke it — `--force`
+overrides that deliberately, and still prints what it is overriding. It backs up
+`package.json` before touching it, then **composes the tree for real** to confirm
+the plugin appeared, and **rolls itself back** if it did not.
+
+By hand it is the same three facts DSH reconciles:
+
+1. the package must resolve from the profile's install closure —
+   `pnpm add file:/path/to/dsh-plugin-doctor`, or a junction placed in the
+   profile's `node_modules` (`mklink /J` on Windows, no admin needed);
+2. the manifest declares `dsh.bundle.patch`, which puts the package in the
+   layer stack;
+3. it is listed in `dsh.profile.bundles` in the profile's `package.json`.
 
 Verify before restarting:
 
