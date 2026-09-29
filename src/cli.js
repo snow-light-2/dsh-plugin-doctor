@@ -12,6 +12,21 @@ import { resolveHome, resolveDshBin, dshBinHelp, readText, decodeText } from './
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PKG = JSON.parse(readFileSync(resolve(HERE, '..', 'package.json'), 'utf8'));
 
+/**
+ * The environment for the composer child.
+ *
+ * `spawnSync(process.execPath, ...)` only re-enters Node when the running binary
+ * *is* node. Inside the desktop build it is Electron instead, and Electron runs a
+ * JS entry point only when this variable is set — otherwise it opens a window and
+ * the spawn appears to succeed while producing nothing. The plugin's host half
+ * already exports this, but the CLI is usable on its own, so set it here too.
+ */
+function composerEnv(home) {
+  const env = { ...process.env, DSH_HOME: home };
+  if (process.versions.electron) env.ELECTRON_RUN_AS_NODE = '1';
+  return env;
+}
+
 const USAGE = `dsh-plugin-doctor ${PKG.version} — diagnose DSH plugin-tree conflicts
 
 usage
@@ -129,7 +144,7 @@ function loadForRead(flags) {
     const result = spawnSync(process.execPath, ['--expose-internals', binInfo.bin, '--profile', profile, '--dump-config'], {
       encoding: 'utf8',
       maxBuffer: 128 * 1024 * 1024,
-      env: { ...process.env, DSH_HOME: homeInfo.home },
+      env: composerEnv(homeInfo.home),
     });
     if (result.error) return { error: `could not run the composer: ${result.error.message}` };
     writeFileSync(target, result.stdout ?? '', 'utf8');

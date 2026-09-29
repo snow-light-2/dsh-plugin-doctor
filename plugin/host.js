@@ -55,13 +55,60 @@ function activeProfile() {
   return 'web';
 }
 
+/**
+ * The environment the CLI child needs.
+ *
+ * Under `dsh web` the host half runs in a plain Node process, so `process.execPath`
+ * is node itself and spawning it re-enters the CLI. The desktop build is not that:
+ * its harness runs inside the Electron binary, so `process.execPath` is the GUI
+ * application, and spawning it would launch a second window instead of the script.
+ * Electron only acts as Node when this variable is set.
+ */
+function childEnv() {
+  const env = { ...process.env };
+  if (process.versions.electron) env.ELECTRON_RUN_AS_NODE = '1';
+  return env;
+}
+
+/**
+ * The harness's own `bin.js`, so the CLI does not have to rediscover it.
+ *
+ * The CLI locates dsh by reading the desktop's log files. That works under the
+ * third-party desktop build, which writes `logs/harness.log` beside the home, but
+ * the official build keeps no such log — so `loggedInstalls` came back empty, the
+ * composer could not be found, and every `/report` failed with a 502 while
+ * `/health` still looked fine.
+ *
+ * The host half is loaded *by* the harness, so it already knows the answer:
+ * the launcher passes bin.js as the first script argument.
+ */
+function harnessBin() {
+  // The plain launcher passes the harness entry as the first script argument.
+  for (const arg of process.argv) {
+    if (typeof arg === 'string' && /[\\/]@deepseek-ai[\\/]dsh[\\/]lib[\\/]bin\.js$/.test(arg)) return arg;
+  }
+  // The desktop build does not: its process entry is the shell's own host CLI,
+  // which drives the harness next to it. `@deepseek-ai/dsh-desktop-host/lib/cli.js`
+  // therefore implies `@deepseek-ai/dsh/lib/bin.js` — replacing the package name
+  // and the file name is enough.
+  for (const arg of process.argv) {
+    if (typeof arg !== 'string') continue;
+    const shell = /^(.*)[\\/]@deepseek-ai[\\/]dsh-desktop-host[\\/]lib[\\/]cli\.js$/.exec(arg);
+    if (shell) return join(shell[1], '@deepseek-ai', 'dsh', 'lib', 'bin.js');
+  }
+  return undefined;
+}
+
 function runCli(args) {
   return new Promise((resolve) => {
+    const bin = harnessBin();
+    const finalArgs = bin && !args.includes('--dsh-bin') ? [...args, '--dsh-bin', bin] : args;
     let child;
     try {
-      child = spawn(process.execPath, [CLI, ...args], {
+      child = spawn(process.execPath, [CLI, ...finalArgs], {
         windowsHide: true,
         stdio: ['ignore', 'pipe', 'pipe'],
+        env: childEnv(),
       });
     } catch (error) {
       resolve({ ok: false, reason: `could not start the doctor CLI: ${error.message}` });
@@ -253,6 +300,12 @@ export function apply(ctx) {
               cliPresent: existsSync(CLI),
               profile: activeProfile(),
               dshHome: process.env.DSH_HOME ?? null,
+              // Whatever this build exposes as the running script, so a failing
+              // /report can be told apart from an unlocatable harness.
+              argv1: process.argv[1] ?? null,
+              harnessBin: harnessBin() ?? null,
+              electron: process.versions.electron ?? null,
+              runAsNode: process.env.ELECTRON_RUN_AS_NODE ?? null,
             });
             return;
           }
