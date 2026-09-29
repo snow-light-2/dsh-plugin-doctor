@@ -201,8 +201,31 @@ log contains a known DSH failure" a one-liner in CI.
 | `D013` | info | a `dsh.client.inject` target that is not an installed package (usually a runtime service) |
 | `D014` | warn | more than one DSH installation exists on disk and the logs point at the wrong one |
 | `D015` | warn / info | the profile layer could not be read, so the run analysed only the dump — reported as a finding rather than a silent pass |
+| `D016` | error | a downloaded Electron desktop helper is missing the Chromium data files it reads at startup, so whatever it draws has silently stopped |
 
 Every check is read-only. `check` never writes to the profile.
+
+### When a desktop window stops appearing
+
+Plugins that draw their own window (dsh-pet's pet, for instance) download an
+Electron into `$DSH_HOME/electron` on first use, and their "is it installed?"
+check looks only for the executable. If the Chromium data files go missing, the
+plugin launches Electron, watches it die with
+`Invalid file descriptor to ICU data received`, retries until its
+consecutive-crash limit trips, and stops — while `check` still reports that
+plugin as present and enabled. `D016` is what catches that.
+
+```bash
+node scripts/repair-electron-helper.mjs --dry-run   # report the verdict, change nothing
+node scripts/repair-electron-helper.mjs             # move the broken copy aside, re-download
+```
+
+On Windows, `repair-electron-helper.cmd` does the same on a double-click.
+
+It has to *move* the broken directory rather than just re-download, because the
+plugin's own downloader will not act while the executable is still sitting there.
+The broken copy is renamed rather than deleted: it is the evidence of what went
+wrong. DSH Desktop may stay open; only the helper itself must not be running.
 
 ### It will not report a false all-clear
 

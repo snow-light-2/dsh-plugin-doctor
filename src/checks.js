@@ -554,6 +554,7 @@ export const CHECKS = [
   checkClientInject,
   checkStaleInstalls,
   checkAnalysisCoverage,
+  checkElectronHelper,
 ];
 
 export {
@@ -572,6 +573,7 @@ export {
   checkClientInject,
   checkStaleInstalls,
   checkAnalysisCoverage,
+  checkElectronHelper,
 };
 
 /* ------------------------------------------------------------------ D015 */
@@ -599,6 +601,69 @@ function checkAnalysisCoverage(ctx) {
     ];
   }
   return [];
+}
+
+/* ------------------------------------------------------------------ D016 */
+/**
+ * A desktop helper shipped as a downloaded Electron is only "installed" if the
+ * Chromium data files are present. A directory holding just `electron.exe` and
+ * the `*.dll`s launches, fails to read `icudtl.dat`, dies with
+ * `Invalid file descriptor to ICU data received`, and the plugin's restart loop
+ * gives up after its consecutive-crash limit — so the feature disappears
+ * silently while every version check still reports the plugin present and
+ * enabled.
+ *
+ * Found on a real machine where exactly the `.dat`, `.pak` and `.bin` files plus
+ * `locales/` had gone missing and the helper had circuit-broken.
+ */
+function checkElectronHelper(ctx) {
+  const dir = join(ctx.home, 'electron');
+  const mac = process.platform === 'darwin';
+  const exe = mac
+    ? join(dir, 'Electron.app', 'Contents', 'MacOS', 'Electron')
+    : join(dir, process.platform === 'win32' ? 'electron.exe' : 'electron');
+
+  // Not every machine uses a desktop helper, and absence is not a finding.
+  if (!existsSync(exe)) return [];
+
+  const required = mac
+    ? [['Electron.app', 'Contents', 'Frameworks', 'Electron Framework.framework', 'Resources', 'icudtl.dat']]
+    : [
+        ['icudtl.dat'],
+        ['resources.pak'],
+        ['snapshot_blob.bin'],
+        ['v8_context_snapshot.bin'],
+      ];
+  const missing = required.filter((parts) => !existsSync(join(dir, ...parts))).map((parts) => parts.at(-1));
+
+  const localesDir = mac
+    ? join(dir, 'Electron.app', 'Contents', 'Frameworks', 'Electron Framework.framework', 'Resources')
+    : join(dir, 'locales');
+  let locales = 0;
+  try {
+    locales = readdirSync(localesDir).length;
+  } catch {
+    locales = 0;
+  }
+
+  if (missing.length === 0 && locales > 0) return [];
+
+  const absent = [...missing.map((name) => `\`${name}\``), ...(locales === 0 ? ['`locales/` (empty or absent)'] : [])];
+  let present = [];
+  try {
+    present = readdirSync(dir).filter((name) => !name.startsWith('.'));
+  } catch {
+    present = [];
+  }
+
+  return [
+    finding('D016', 'error', 'the Electron desktop helper is incomplete', `\`${exe}\` exists, so an installer's "is Electron present?" check passes, but the Chromium data it needs at runtime is missing: ${absent.join(', ')}. That directory holds ${present.length} entr${present.length === 1 ? 'y' : 'ies'}: ${present.slice(0, 12).join(', ')}${present.length > 12 ? ', …' : ''}.`, {
+      key: 'D016',
+      where: { file: dir, line: null },
+      why: 'a downloaded Electron with missing data files launches, fails on "Invalid file descriptor to ICU data received", and the helper\'s restart loop trips its consecutive-crash limit — the feature disappears while the plugin still reports as installed and enabled',
+      fix: 'rename or delete the electron directory so the downloader runs again — its own presence check only looks for the executable, so moving the broken copy aside is required, not optional',
+    }),
+  ];
 }
 
 export function runChecks(ctx) {
